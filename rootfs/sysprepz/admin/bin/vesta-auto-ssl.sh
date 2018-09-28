@@ -5,6 +5,7 @@ source /etc/container_environment.sh
 
 VESTA_PATH='/usr/local/vesta'
 domain="$VESTA_DOMAIN"
+#user="$VESTA_ADMIN"
 user='admin'
 
 # only run if domain has a value

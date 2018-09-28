@@ -18,7 +18,25 @@ docker run -d --restart=always \
 -p 2222:22 -p 80:80 -p 443:443 -p 3306:3306 -p 5432:5432 -p 8083:8083 \
 -v /opt/vestacp/vesta:/vesta -v /opt/vestacp/home:/home -v /opt/vestacp/backup:/backup \
 niiknow/vestacp
+
 ```
+Note: If you have mysql-server installed on your host machine, then it installs an apparmor profile for mysqld which will result in mysqld failing to launch in your container (see [stackoverlow](https://stackoverflow.com/questions/22473830/docker-and-mysql-libz-so-1-cannot-open-shared-object-file-permission-denied) ). According to the suggestion by @abhi: you need to disable the mysqld apparmor profile on the host with the commands below.
+
+"Of course, this also means that apparmor will be disabled for mysqld on your host.."
+
+```
+sudo ln -s /etc/apparmor.d/usr.sbin.mysqld /etc/apparmor.d/disable/
+sudo apparmor_parser -R /etc/apparmor.d/usr.sbin.mysqld
+
+```
+Note: to reinstate apparmor mysqld remove the link and run parser with "-a" flag
+
+```
+sudo rm /etc/apparmor.d/disable/usr.sbin.mysqld
+sudo apparmor_parser -a /etc/apparmor.d/usr.sbin.mysqld
+
+``
+
 
 ## Volumes
 /vesta  -- configurations
